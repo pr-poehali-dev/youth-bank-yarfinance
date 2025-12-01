@@ -1,0 +1,43 @@
+{
+  "tests": [
+    {
+      "name": "Submit account application",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Иван Тестов",
+        "phone": "+7 (999) 123-45-67",
+        "email": "test@example.com",
+        "request_type": "account"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true,
+        "application_id": 1
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Submit credit application",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "name": "Петр Петров",
+        "phone": "+7 (999) 999-99-99",
+        "email": "credit@example.com",
+        "request_type": "credit"
+      },
+      "expectedStatus": 201,
+      "expectedBody": {
+        "success": true
+      },
+      "bodyMatcher": "partial"
+    },
+    {
+      "name": "Handle OPTIONS request",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    }
+  ]
+}
