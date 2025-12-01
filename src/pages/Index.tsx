@@ -15,15 +15,51 @@ function Index() {
     email: '',
     requestType: 'account'
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Заявка отправлена!",
-      description: "Мы свяжемся с вами в ближайшее время",
-    });
-    setFormData({ name: '', phone: '', email: '', requestType: 'account' });
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('https://functions.poehali.dev/37261f4d-19f6-49da-a8f0-f658c2fe1915', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          email: formData.email,
+          request_type: formData.requestType
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        toast({
+          title: "Заявка отправлена!",
+          description: "Мы свяжемся с вами в ближайшее время",
+        });
+        setFormData({ name: '', phone: '', email: '', requestType: 'account' });
+      } else {
+        toast({
+          title: "Ошибка",
+          description: "Не удалось отправить заявку. Попробуйте позже.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Ошибка",
+        description: "Проблема с подключением. Попробуйте позже.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

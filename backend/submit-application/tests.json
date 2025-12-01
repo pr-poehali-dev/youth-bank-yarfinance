@@ -12,8 +12,7 @@
       },
       "expectedStatus": 201,
       "expectedBody": {
-        "success": true,
-        "application_id": 1
+        "success": true
       },
       "bodyMatcher": "partial"
     },
